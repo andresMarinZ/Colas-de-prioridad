@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.min.css" media="screen" />
+
+    <style>
+        .prioridad,
+        .sinPrioridad {
+            border: 1px solid red;
+            border-radius: 50px;
+            padding: 20px;
+            max-width: 22%;
+            background: orange;
+        }
+        
+        #sinPrioridad p,
+        #conPrioridad p {
+            margin-top: 10px;
+            font-size: 15px;
+            text-align: center;
+            animation: fadein 2s;
+            -moz-animation: fadein 2s;
+            /* Firefox */
+            -webkit-animation: fadein 2s;
+            /* Safari and Chrome */
+            -o-animation: fadein 2s;
+            /* Opera */
+        }
+        
+        @keyframes fadein {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @-moz-keyframes fadein {
+            /* Firefox */
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @-webkit-keyframes fadein {
+            /* Safari and Chrome */
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @-o-keyframes fadein {
+            /* Opera */
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">Colas de prioridad</h1>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+                <input class="form-control" id="nombre" type="text" placeholder="Nombre Persona">
+            </div>
+
+            <div class="col-md-6">
+                <button class="btn btn-primary" onclick="add();"> Agregar a la cola </button>
+                <button class="btn btn-warning " onclick="addPrioridad();"> Agregar a la cola con prioridad </button>
+                <button class="btn btn-default" onclick="despachar();"> Despachar Usuario </button>
+            </div>
+
+            <div class="col-md-6">
+                <h4> Sin Prioridad </h4>
+                <div id="sinPrioridad"></div>
+            </div>
+            <div class="col-md-6">
+                <h4>Con Prioridad </h4>
+                <div id="conPrioridad">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <script>
+        var arrayElement = [];
+        var arrayElementNegativos = [];
+        // Array con tres objetos creados sobre la marcha.
+        var divPrioridad = document.getElementById('conPrioridad');
+        var divSinPrioridad = document.getElementById('sinPrioridad');
+
+        function addPrioridad() {
+
+            if (arrayElementNegativos.length <= 0) {
+                var unArray = {
+                    nombre: document.getElementById("nombre").value,
+                    prioridad: -1
+                }
+                arrayElementNegativos.push(unArray)
+                divPrioridad.innerHTML = "";
+                arrayElementNegativos.map(function(dato) {
+                    divPrioridad.innerHTML += "<p class='prioridad'>" + "Nombre: " + dato.nombre + " - Prioridad : " + dato.prioridad + "</p>";
+                });
+            } else {
+                arrOrdenados = [];
+                arrayElementNegativos.map(function(dato) {
+                    arrOrdenados.push(dato.prioridad);
+                });
+
+                var elementosOrdenados = arrOrdenados.sort(function(a, b) {
+                    return a - b;
+                });
+
+                var consecutivo = elementosOrdenados[0] - 1;
+
+
+                var unArray = {
+                    nombre: document.getElementById("nombre").value,
+                    prioridad: consecutivo
+                }
+                arrayElementNegativos.push(unArray)
+                divPrioridad.innerHTML = "";
+                arrayElementNegativos.map(function(dato) {
+                    divPrioridad.innerHTML += "<p class='prioridad'>" + "Nombre: " + dato.nombre + " - Prioridad : " + dato.prioridad + "</p>";
+                });
+            }
+        }
+
+        function add() {
+
+            if (arrayElement.length <= 0) {
+                var unArray = {
+                    nombre: document.getElementById("nombre").value,
+                    prioridad: 1
+                }
+                arrayElement.push(unArray)
+                divSinPrioridad.innerHTML = "";
+                arrayElement.map(function(dato) {
+                    divSinPrioridad.innerHTML += "<p class='sinPrioridad'>" + "Nombre: " + dato.nombre + " - Prioridad : " + dato.prioridad + "</p>";
+                });
+            } else {
+                arrOrdenados = [];
+                arrayElement.map(function(dato) {
+                    arrOrdenados.push(dato.prioridad);
+                });
+
+                var elementosOrdenados = arrOrdenados.sort(function(a, b) {
+                    return b - a;
+                });
+
+                var consecutivo = elementosOrdenados[0] + 1;
+
+                var unArray = {
+                    nombre: document.getElementById("nombre").value,
+                    prioridad: consecutivo
+                }
+                arrayElement.push(unArray)
+                divSinPrioridad.innerHTML = "";
+                arrayElement.map(function(dato) {
+                    divSinPrioridad.innerHTML += "<p class='sinPrioridad'>" + "Nombre: " + dato.nombre + " - Prioridad : " + dato.prioridad + "</p>";
+                });
+            }
+
+        }
+
+        function despachar() {
+
+            if (arrayElementNegativos.length > 0) {
+                priorityNegativos = arrayElementNegativos[0].prioridad;
+                arrOrdenados = []
+                arrayElementNegativos.map(function(dato) {
+                    arrOrdenados.push(dato.prioridad);
+                });
+
+                var elementosOrdenados = arrOrdenados.sort(function(a, b) {
+                    return a - b;
+                });
+
+                elementosOrdenados.forEach(function(item, index) {
+                    if (item < priorityNegativos) {
+                        priorityNegativos = item;
+                        prioridadSalida = index;
+                    }
+                });
+
+                if (elementosOrdenados.length == 1) {
+                    this.arrayElementNegativos.splice(0, 1);
+                } else {
+                    this.arrayElementNegativos.splice(prioridadSalida, 1);
+                }
+
+                divPrioridad.innerHTML = "";
+                arrayElementNegativos.map(function(dato) {
+                    divPrioridad.innerHTML += "<p class='prioridad' >" + "Nombre: " + dato.nombre + " - Prioridad : " + dato.prioridad + "</p>";
+                });
+
+            } else {
+
+                if (arrayElement.length > 0) {
+                    var priority = arrayElement[0].prioridad;
+                    var priorizedItem = 0;
+                    arrayElement.forEach(function(item, index) {
+                        if (item.prioridad < priority) {
+                            priority = item.prioridad;
+                            priorizedItem = index;
+                        }
+                    });
+                    //primer parametro indica la posicion a eliminar y el segundo la cantidad de elementos a borrar
+                    this.arrayElement.splice(priorizedItem, 1);
+                    divSinPrioridad.innerHTML = "";
+                    arrayElement.map(function(dato) {
+                        divSinPrioridad.innerHTML += "<p class='sinPrioridad' >" + "Nombre: " + dato.nombre + " - Prioridad : " + dato.prioridad + "</p>";
+                    });
+                }
+
+
+            }
+        }
+    </script>
+</body>
+
+</html>
